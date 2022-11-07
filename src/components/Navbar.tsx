@@ -7,19 +7,23 @@ import {
   MenuItem,
   MenuList,
   Show,
-  Stack,
   Tab,
   TabList,
   Tabs,
   Text,
   Wrap,
 } from "@chakra-ui/react";
+import { link } from "fs";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
+import { useMenuActiveLinks } from "../hooks/useMenuActiveLinks";
 import { useUser } from "../hooks/useUser";
 
 const DesctopNav = () => {
   const user = useUser();
+  const links = useMenuActiveLinks();
 
   return (
     <Flex gap={6} alignItems="end" height={"100%"}>
@@ -36,10 +40,13 @@ const DesctopNav = () => {
         </Menu>
         <Text fontSize={"2xl"}>{user?.name}</Text>
       </Flex>
-      <Tabs width={"100%"}>
+      <Tabs defaultIndex={links.findIndex((l) => l.active)} width={"100%"}>
         <TabList>
-          <Tab>List</Tab>
-          <Tab>Dashboard</Tab>
+          {links.map((link) => (
+            <Link key={link.path} href={link.path}>
+              <Tab>{link.name}</Tab>
+            </Link>
+          ))}
         </TabList>
       </Tabs>
     </Flex>
