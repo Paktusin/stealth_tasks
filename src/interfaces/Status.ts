@@ -1,1 +1,1 @@
-export type Status = "new" | "active" | "resolved" | "closed";
+export const statuses = ["active", "new", "closed", "resolved"] as Status[];

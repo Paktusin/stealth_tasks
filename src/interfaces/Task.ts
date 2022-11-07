@@ -6,7 +6,7 @@ export interface Task {
   title: string;
   assignee: User;
   createdAt: number;
-  updatedAt: number;
-  status: Status;
+  updatedAt?: number;
+  status: string;
   related: string[];
 }
