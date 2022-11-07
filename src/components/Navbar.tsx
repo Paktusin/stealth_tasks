@@ -27,14 +27,14 @@ const DesctopNav = () => {
         <Menu>
           <MenuButton>
             <Avatar style={{ overflow: "hidden" }}>
-              <img src={user.image!} referrerPolicy="no-referrer" />
+              <img src={user?.image!} referrerPolicy="no-referrer" />
             </Avatar>
           </MenuButton>
           <MenuList>
             <MenuItem onClick={() => signOut()}>Logout</MenuItem>
           </MenuList>
         </Menu>
-        <Text fontSize={"2xl"}>{user.name}</Text>
+        <Text fontSize={"2xl"}>{user?.name}</Text>
       </Flex>
       <Tabs width={"100%"}>
         <TabList>
