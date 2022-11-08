@@ -11,7 +11,7 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
       {user && (
         <>
           <Navbar />
-          <Box flex={"1 auto"} overflow="auto">
+          <Box p={8} flex={"1 auto"} flexDirection={"column"} overflow="auto">
             {children}
           </Box>
           <Footer />
