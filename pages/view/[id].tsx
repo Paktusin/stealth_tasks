@@ -5,17 +5,26 @@ import { toObject } from "../../src/hooks/toObject";
 import { Task } from "../../src/interfaces/Task";
 import { taskService } from "../../src/services/task.service";
 
-export default function TaskListPage({ task }: { task: Task }) {
+export default function TaskViewPage({
+  task,
+  related,
+}: {
+  task: Task;
+  related: Task[];
+}) {
   return (
     <Layout>
-      <TaskView task={task}></TaskView>
+      <TaskView task={task} related={related}></TaskView>
     </Layout>
   );
 }
 
 export async function getServerSideProps(ctx: any) {
-  const task = await taskService.getInfo(ctx.params.id);
+  const task = (await taskService.getInfo(ctx.params.id)) as Task;
+  const related = await (
+    await (await taskService.related(task.related)).toArray()
+  ).map(toObject);
   return {
-    props: { tasks: toObject(task) },
+    props: { task: toObject(task), related },
   };
 }

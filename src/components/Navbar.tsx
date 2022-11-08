@@ -55,7 +55,7 @@ const DesctopNav = () => {
 
 export const Navbar = () => {
   return (
-    <Box boxShadow={"lg"} height={70}>
+    <Box boxShadow={"lg"} height={70} minHeight={70}>
       <Show below="sm">Mobile menu</Show>
       <Show above="sm">
         <DesctopNav />

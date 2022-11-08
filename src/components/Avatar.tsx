@@ -4,6 +4,7 @@ import React from "react";
 export const Avatar: React.FC<{ img?: string }> = ({ img }) => {
   return (
     <Box
+      backgroundColor={"gray"}
       shadow={"base"}
       borderRadius={4}
       width={16}

@@ -11,4 +11,5 @@ export interface Task {
   updatedAt?: number;
   status: string;
   related: string[];
+  relatedTasks?: Task[];
 }

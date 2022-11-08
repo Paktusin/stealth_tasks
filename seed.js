@@ -19,13 +19,13 @@ function rndEl() {
   return this[Math.floor(Math.random() * this.length)];
 }
 
-const text = Array(10000).fill("Lorum ipsum").join(" ");
+const text = Array(1000).fill("Lorum ipsum").join(" ");
 
 tasks = Array(100)
   .fill(null)
   .map((_, index) => ({
     assignee: [rndEl.call(users).email],
-    title: "Test task",
+    title: "Test task №" + index,
     description: text,
     related: [],
     status: rndEl.call(statuses),
@@ -34,7 +34,7 @@ tasks = Array(100)
 
 async function main() {
   const connection = await new MongoClient(config.MONGOURL).connect();
-  await connection.db("test").collection("users").insertMany(users);
+  // await connection.db("test").collection("users").insertMany(users);
   await connection.db("test").collection("tasks").insertMany(tasks);
   console.log("done");
 }

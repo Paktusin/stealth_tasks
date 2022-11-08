@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+import { ObjectId, AggregateOptions } from "mongodb";
 import { Task } from "../interfaces/Task";
 import { DataService } from "./dataService";
 
@@ -21,31 +21,44 @@ export class TaskService extends DataService<Task> {
             as: "user",
           },
         },
+        {
+          $lookup: {
+            from: "tasks",
+            localField: "related",
+            foreignField: "_id",
+            as: "relatedTasks",
+          },
+        },
         { $unwind: "$user" },
       ])
       .toArray();
     return tasks[0];
   }
 
-  async listWithusers(limit = 10, skip = 0) {
-    return await (
-      await this.collection()
-    )
-      .aggregate([
-        { $project: { description: 0, related: 0 } },
-        {
-          $lookup: {
-            from: "users",
-            localField: "assignee",
-            foreignField: "email",
-            as: "user",
-          },
+  async related(ids: string[]) {
+    const objectIds = ids.map((id) => new ObjectId(id));
+    return this.listWithusers([{ $match: { _id: { $in: objectIds } } }]);
+  }
+
+  async listWithusers(extended?: any) {
+    const options = [
+      { $sort: { createdAt: -1 } },
+      { $project: { description: 0, related: 0 } },
+      {
+        $lookup: {
+          from: "users",
+          localField: "assignee",
+          foreignField: "email",
+          as: "user",
         },
-        { $unwind: "$user" },
-        { $project: { assignee: 0 } },
-      ])
-      .skip(skip)
-      .limit(limit);
+      },
+      { $unwind: "$user" },
+      { $project: { assignee: 0 } },
+    ];
+    if (extended) {
+      options.push(...extended);
+    }
+    return await (await this.collection()).aggregate(options);
   }
 }
 
