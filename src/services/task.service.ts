@@ -7,7 +7,7 @@ export class TaskService extends DataService<Task> {
     super("tasks");
   }
 
-  async listWithusers(limit = 10) {
+  async listWithusers(limit = 10, skip = 0) {
     return await (
       await this.collection()
     )
@@ -22,6 +22,7 @@ export class TaskService extends DataService<Task> {
         },
         { $unwind: "$user" },
       ])
+      .skip(skip)
       .limit(limit);
   }
 }

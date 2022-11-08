@@ -10,9 +10,7 @@ export default function TaskListPage({ tasks }: { tasks: Task[] }) {
   return (
     <Layout>
       <Center>
-        <Wrap maxWidth={720} width={"100%"}>
-          <TaskList tasks={tasks}></TaskList>
-        </Wrap>
+        <TaskList tasks={tasks}></TaskList>
       </Center>
     </Layout>
   );

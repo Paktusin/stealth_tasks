@@ -1,8 +1,9 @@
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Task } from "../interfaces/Task";
 import { Avatar } from "./Avatar";
+import { Infinity } from "./Infinity";
 import { Status } from "./Status";
 
 export const TaskListItem: React.FC<{ task: Task }> = ({ task }) => {
@@ -50,12 +51,32 @@ export const TaskListItem: React.FC<{ task: Task }> = ({ task }) => {
   );
 };
 
-export const TaskList: React.FC<{ tasks: Task[] }> = ({ tasks }) => {
+export const TaskList: React.FC<{ tasks: Task[] }> = ({
+  tasks: definedTasks,
+}) => {
+  const size = 10;
+  const [page, setPage] = useState(0);
+  const [tasks, setTasks] = useState<Task[]>(definedTasks || []);
+  const loadMore = useCallback(() => {
+    const newPage = page + 1;
+    fetch(`/api/task?skip=${newPage * size}&limit=${size}`)
+      .then((res) => res.json())
+      .then((res) => {
+        if (newPage) {
+          setTasks((tasks) => tasks.concat(res));
+        } else {
+          setTasks(res);
+        }
+        setPage(newPage);
+      });
+  }, [page]);
   return (
-    <Stack spacing={4} width={"100%"}>
-      {tasks.map((task) => (
-        <TaskListItem key={task._id} task={task} />
-      ))}
-    </Stack>
+    <Infinity onEnd={loadMore}>
+      <Stack maxWidth={720} spacing={4} width={"100%"}>
+        {tasks.map((task) => (
+          <TaskListItem key={task._id} task={task} />
+        ))}
+      </Stack>
+    </Infinity>
   );
 };
