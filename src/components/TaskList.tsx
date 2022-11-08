@@ -1,5 +1,6 @@
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
+import Link from "next/link";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Task } from "../interfaces/Task";
 import { Avatar } from "./Avatar";
@@ -12,47 +13,49 @@ export const TaskListItem: React.FC<{ task: Task }> = ({ task }) => {
     [task.createdAt]
   );
   return (
-    <Box
-      width={"100%"}
-      cursor={"pointer"}
-      display={"flex"}
-      padding={2}
-      shadow="base"
-      gap={8}
-      border={"1px"}
-      borderColor="gray.200"
-      borderRadius={8}
-      p={4}
-      alignItems={"center"}
-    >
-      <Avatar img={task.user?.image} />
-      <Flex
-        width={"1px"}
-        flex={"1 auto"}
-        flexDirection={"column"}
-        overflow={"hidden"}
+    <Link href={"/view/" + task._id}>
+      <Box
+        width={"100%"}
+        cursor={"pointer"}
+        display={"flex"}
+        padding={2}
+        shadow="base"
+        gap={8}
+        border={"1px"}
+        borderColor="gray.200"
+        borderRadius={8}
+        p={4}
+        alignItems={"center"}
       >
-        <Text
-          fontSize={'lg'}
+        <Avatar img={task.user?.image} />
+        <Flex
+          width={"1px"}
+          flex={"1 auto"}
+          flexDirection={"column"}
           overflow={"hidden"}
-          textOverflow={"ellipsis"}
-          whiteSpace={"nowrap"}
-          fontWeight={"bold"}
         >
-          {task.title}
-        </Text>
-        <Text
-          overflow={"hidden"}
-          textOverflow={"ellipsis"}
-          whiteSpace={"nowrap"}
-          color={"gray"}
-        >
-          <b>{task.user?.name}</b> Creation date: {date}
-        </Text>
-      </Flex>
-      <Status status={task.status} />
-      <ChevronRightIcon />
-    </Box>
+          <Text
+            fontSize={"lg"}
+            overflow={"hidden"}
+            textOverflow={"ellipsis"}
+            whiteSpace={"nowrap"}
+            fontWeight={"bold"}
+          >
+            {task.title}
+          </Text>
+          <Text
+            overflow={"hidden"}
+            textOverflow={"ellipsis"}
+            whiteSpace={"nowrap"}
+            color={"gray"}
+          >
+            <b>{task.user?.name}</b> Creation date: {date}
+          </Text>
+        </Flex>
+        <Status status={task.status} />
+        <ChevronRightIcon />
+      </Box>
+    </Link>
   );
 };
 
