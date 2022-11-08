@@ -19,12 +19,14 @@ function rndEl() {
   return this[Math.floor(Math.random() * this.length)];
 }
 
+const text = Array(10000).fill("Lorum ipsum").join(" ");
+
 tasks = Array(100)
   .fill(null)
   .map((_, index) => ({
     assignee: [rndEl.call(users).email],
     title: "Test task",
-    description: "",
+    description: text,
     related: [],
     status: rndEl.call(statuses),
     createdAt: new Date().valueOf() + index * 60 * 36000,

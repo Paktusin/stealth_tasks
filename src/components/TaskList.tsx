@@ -1,12 +1,16 @@
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Task } from "../interfaces/Task";
 import { Avatar } from "./Avatar";
 import { Infinity } from "./Infinity";
 import { Status } from "./Status";
 
 export const TaskListItem: React.FC<{ task: Task }> = ({ task }) => {
+  const date = useMemo(
+    () => new Date(task.createdAt).toLocaleString(),
+    [task.createdAt]
+  );
   return (
     <Box
       width={"100%"}
@@ -29,6 +33,7 @@ export const TaskListItem: React.FC<{ task: Task }> = ({ task }) => {
         overflow={"hidden"}
       >
         <Text
+          fontSize={'lg'}
           overflow={"hidden"}
           textOverflow={"ellipsis"}
           whiteSpace={"nowrap"}
@@ -42,7 +47,7 @@ export const TaskListItem: React.FC<{ task: Task }> = ({ task }) => {
           whiteSpace={"nowrap"}
           color={"gray"}
         >
-          {task.user?.name}
+          <b>{task.user?.name}</b> Creation date: {date}
         </Text>
       </Flex>
       <Status status={task.status} />
